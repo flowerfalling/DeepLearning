@@ -1,10 +1,10 @@
 version: '3.8'
 services:
   jupyter:
-    image: papersus/pytorch-jupyter:v1.0
+    image: papersus/mini-pytorch:v1.0
     build: .
     ports:
       - "8888:8888"
     tty: true
-    command: /bin/bash -c "conda activate falling-pytorch && jupyter notebook --allow-root --ip=0.0.0.0 --no-browser"
+    command: /bin/bash -c "source activate falling-pytorch && jupyter notebook --allow-root --ip=0.0.0.0 --no-browser"
     container_name: pytorch-jupyter

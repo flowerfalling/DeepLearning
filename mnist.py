@@ -82,7 +82,7 @@ def main():
     # net = Net()
     # base.net_image(net, (1, 1, 28, 28), 'mnist')
     # base.summary((1, 28, 28), net)
-    # train(3, True)
+    train(3, True)
     # test()
     pass
 
