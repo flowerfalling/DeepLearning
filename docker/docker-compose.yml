@@ -5,6 +5,7 @@ services:
     build: .
     ports:
       - "8888:8888"
+      - "8889:8889"
+      - "9000:9000"
     tty: true
-    command: /bin/bash -c "source activate falling-pytorch && jupyter notebook --allow-root --ip=0.0.0.0 --no-browser"
-    container_name: pytorch-jupyter
+    command: bash -c "source activate base && jupyter notebook --allow-root --ip=0.0.0.0 --no-browser"
