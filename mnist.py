@@ -80,8 +80,9 @@ def test():
 # @base.ringer
 @base.timer
 def main():
+    net = Net()
     img = make_dot(net(torch.randn(64, 1, 28, 28)),
-    params=dict(net.named_parameters()), show_attrs=True, show_saved=True)
+                   params=dict(net.named_parameters()), show_attrs=True, show_saved=True)
     img.format = 'png'
     img.view(cleanup=True)
     pass
