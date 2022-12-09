@@ -4,6 +4,7 @@
 # @File    : base.py
 # @Software: PyCharm
 import torch
+from torchviz import make_dot
 
 
 def timer(func):
@@ -55,82 +56,18 @@ def test(net, path, dataloader):
     print(f'Correct rate: {i}/{len(dataloader)}')
 
 
-def make_dot(var, params=None):
-    """
-    Produces Graphviz representation of PyTorch autograd graph
-    Blue nodes are the Variables that require grad, orange are Tensors
-    saved for backward in torch.autograd.Function
-    Args:
-        var: output Variable
-        params: dict of (name, Variable) to add names to node that
-            require grad
-    """
-    from graphviz import Digraph
-    from torch.autograd import Variable
-    if params is not None:
-        assert isinstance(params.values()[0], Variable)
-        param_map = {id(v): k for k, v in params.items()}
-
-    node_attr = dict(style='filled',
-                     shape='box',
-                     align='left',
-                     fontsize='12',
-                     ranksep='0.1',
-                     height='0.2')
-    dot = Digraph(format='png', node_attr=node_attr, graph_attr=dict(size="12,12"))
-    seen = set()
-
-    def size_to_str(size):
-        return '(' + ', '.join(['%d' % v for v in size]) + ')'
-
-    def add_nodes(var_):
-        if var_ not in seen:
-            if torch.is_tensor(var_):
-                dot.node(str(id(var_)), size_to_str(var_.size()), fillcolor='orange')
-            elif hasattr(var_, 'variable'):
-                u = var_.variable
-                name = param_map[id(u)] if params is not None else ''
-                node_name = '%s\n %s' % (name, size_to_str(u.size()))
-                dot.node(str(id(var_)), node_name, fillcolor='lightblue')
-            else:
-                dot.node(str(id(var_)), str(type(var_).__name__))
-            seen.add(var_)
-            if hasattr(var_, 'next_functions'):
-                for u in var_.next_functions:
-                    if u[0] is not None:
-                        dot.edge(str(id(u[0])), str(id(var_)))
-                        add_nodes(u[0])
-            if hasattr(var_, 'saved_tensors'):
-                for t in var_.saved_tensors:
-                    dot.edge(str(id(t)), str(id(var_)))
-                    add_nodes(t)
-
-    add_nodes(var.grad_fn)
-    return dot
-
-
-def net_image(net, input_size, name='net'):
-    from torch.autograd import Variable
-    x = Variable(torch.randn(*input_size))
-    y = net(x)
-    g = make_dot(y)
-    g.render(filename=name, view=False, cleanup=True)
-
-    params = list(net.parameters())
-    k = 0
-    for i in params:
-        c = 1
-        print("该层的结构：" + str(list(i.size())))
-        for j in i.size():
-            c *= j
-        print("该层参数和：" + str(c))
-        k = k + c
-    print("总参数数量和：" + str(k))
-
-
 def summary(input_size, model, _print=True, border=False):
     import pytorchsummary
     pytorchsummary.summary(input_size, model, _print, border)
+
+
+def imshow(net: torch.nn.Module, input_, format_: str, name: str, directory: str = './image'):
+    img = make_dot(net(input_),
+                   params=dict(net.named_parameters()),
+                   show_attrs=True, show_saved=True)
+    img.format = format_
+    img.view(cleanup=True, filename=name, directory=directory)
+    pass
 
 
 @timer

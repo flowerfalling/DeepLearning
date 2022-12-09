@@ -9,7 +9,6 @@ import torchvision.datasets
 from torch import nn
 from torch.nn import functional as f
 from torchvision import transforms
-from torchviz import make_dot
 
 import base
 
@@ -77,14 +76,10 @@ def test():
     base.test(Net(), PATH, testloader)
 
 
-# @base.ringer
+@base.ringer
 @base.timer
 def main():
-    net = Net()
-    img = make_dot(net(torch.randn(64, 1, 28, 28)),
-                   params=dict(net.named_parameters()), show_attrs=True, show_saved=True)
-    img.format = 'png'
-    img.view(cleanup=True)
+    base.imshow(Net(), torch.randn(64, 1, 28, 28), 'png', 'mnist', './image')
     pass
 
 
