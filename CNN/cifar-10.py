@@ -13,7 +13,7 @@ from torchvision import transforms
 
 import base
 
-PATH = "pth/cifar_net.pth"
+PATH = "../pth/cifar_net.pth"
 
 
 class Net(nn.Module):
@@ -47,7 +47,7 @@ class Net(nn.Module):
 def train(times, save=False):
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                     transforms.RandomHorizontalFlip(), transforms.RandomCrop(32, 4)])
-    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+    trainset = torchvision.datasets.CIFAR10(root='../data', train=True, download=True, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=2)
 
     net = Net()
@@ -84,7 +84,7 @@ def train(times, save=False):
 @base.timer
 def main():
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-    testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
+    testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform)
     testloader = torch.utils.data.DataLoader(testset, shuffle=False, num_workers=2)
     base.test(Net(), PATH, testloader)
     pass

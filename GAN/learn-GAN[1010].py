@@ -5,14 +5,20 @@
 # @Software: PyCharm
 import random
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 import torch
 from torch import nn
-import matplotlib.pyplot as plt
+from abc import ABCMeta
+
+PATH_G = '../pth/GAN_1010G.pth'
+PATH_D = '../pth/GAN_1010D.pth'
 
 
-class Plot:
+class Plot(metaclass=ABCMeta):
+    progress = []
+
     def plot_progress(self):
         df = pandas.DataFrame(self.progress, columns=['loss'])
         df.plot(ylim=(0, 1.0), figsize=(16, 8), alpha=0.1, marker='.', grid=True, yticks=(0, 0.25, 0.5))
@@ -42,9 +48,7 @@ class D(nn.Module, Plot):
 
         self.loss_func = nn.MSELoss()
         self.optimiser = torch.optim.SGD(self.parameters(), lr=0.01)
-
         self.counter = 0
-        self.progress = []
 
     def forward(self, inputs):
         return self.model(inputs)
@@ -73,9 +77,7 @@ class G(nn.Module, Plot):
         )
 
         self.optimiser = torch.optim.SGD(self.parameters(), lr=0.01)
-
         self.counter = 0
-        self.progress = []
         self.image_list = []
 
     def forward(self, inputs):
@@ -98,14 +100,21 @@ class G(nn.Module, Plot):
 def main():
     discriminator = D()
     generator = G()
+    try:
+        generator.load_state_dict(torch.load(PATH_G))
+        discriminator.load_state_dict(torch.load(PATH_D))
+    except FileNotFoundError:
+        pass
     for _ in range(10000):
         discriminator.nn_train(GR()(), torch.FloatTensor([1.0]))
         discriminator.nn_train(generator(torch.FloatTensor([0.5])).detach(), torch.FloatTensor([0.0]))
         generator.nn_train(discriminator, torch.FloatTensor([0.5]), torch.FloatTensor([1.0]))
-    # discriminator.plot_progress()
+    discriminator.plot_progress()
     plt.figure(figsize=(16, 8))
     plt.imshow(np.array(generator.image_list).T, interpolation='none', cmap='Blues')
     plt.show()
+    torch.save(generator.state_dict(), PATH_G)
+    torch.save(discriminator.state_dict(), PATH_D)
     pass
 
 

@@ -14,7 +14,7 @@ from pytorchsummary import summary
 
 import base
 
-PATH = "pth/fashion_mnist(resnet).pth"
+PATH = "../pth/fashion_mnist(resnet).pth"
 
 
 class Residual(nn.Module):
@@ -64,7 +64,7 @@ def train(epoch=1, save=False):
 
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(0.5, 0.5),
                                     transforms.Resize(224, interpolation=transforms.InterpolationMode.NEAREST)])
-    trainset = torchvision.datasets.FashionMNIST(root='./data', train=True, download=True, transform=transform)
+    trainset = torchvision.datasets.FashionMNIST(root='../data', train=True, download=True, transform=transform)
     trainLoader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=2)
     for e in range(epoch):
         running_loss = 0.0
@@ -88,7 +88,7 @@ def train(epoch=1, save=False):
 def test():
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(0.5, 0.5),
                                     transforms.Resize(224, interpolation=transforms.InterpolationMode.NEAREST)])
-    testset = torchvision.datasets.FashionMNIST(root='./data', train=False, download=True, transform=transform)
+    testset = torchvision.datasets.FashionMNIST(root='../data', train=False, download=True, transform=transform)
     testLoader = torch.utils.data.DataLoader(testset, shuffle=True, num_workers=2)
     base.test(net, PATH, testLoader)
 

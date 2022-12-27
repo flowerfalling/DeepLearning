@@ -12,7 +12,7 @@ from torch import nn
 
 import base
 
-PATH = "pth/rnn_demo.pth"
+PATH = "../pth/rnn_demo.pth"
 
 
 class Net(nn.Module):
