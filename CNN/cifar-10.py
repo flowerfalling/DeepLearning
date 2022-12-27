@@ -11,7 +11,7 @@ from torch import nn
 from torch.nn import functional as f
 from torchvision import transforms
 
-import base
+# import base
 
 PATH = "../pth/cifar_net.pth"
 
@@ -52,7 +52,7 @@ def train(times, save=False):
 
     net = Net()
     try:
-        net.load_state_dict(torch.load(PATH))
+        # net.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
         pass
     except FileNotFoundError:
         pass
@@ -80,13 +80,14 @@ def train(times, save=False):
             torch.save(net.state_dict(), PATH)
 
 
-@base.ringer
-@base.timer
+# @base.ringer
+# @base.timer
 def main():
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     testset = torchvision.datasets.CIFAR10(root='../data', train=False, download=True, transform=transform)
     testloader = torch.utils.data.DataLoader(testset, shuffle=False, num_workers=2)
-    base.test(Net(), PATH, testloader)
+    train(1)
+    # base.test(Net(), PATH, testloader)
     pass
 
 
