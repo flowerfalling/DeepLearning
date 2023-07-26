@@ -12,7 +12,7 @@ from torchvision import transforms
 
 import base
 
-PATH = "../pth/mnist_net.pth"
+PATH = r"D:\Projects\PycharmProjects\Digital-recognition-GUI\net.pth"
 
 
 class Net(nn.Module):
@@ -79,8 +79,12 @@ def test():
 @base.ringer
 @base.timer
 def main():
+    # train(2, True)
     # base.imshow(Net(), torch.randn(64, 1, 28, 28), 'png', 'mnist', './image')
     test()
+    # net = Net()
+    # net.load_state_dict(torch.load(PATH))
+    # torch.save(net, 'net.pkl')
     pass
 
 
