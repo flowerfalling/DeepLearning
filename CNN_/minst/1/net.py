@@ -4,7 +4,6 @@
 # @File    : net.py
 # @Software: PyCharm
 import torch
-import torch.utils.data
 from torch import nn
 from torch.nn import functional as f
 

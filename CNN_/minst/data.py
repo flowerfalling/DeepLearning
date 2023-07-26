@@ -12,6 +12,6 @@ DATA_PATH = r"D:\Projects\PycharmProjects\Deep-learning\data"
 
 def loader(train=True, batch_size=1):
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(0.5, 0.5)])
-    trainset = torchvision.datasets.MNIST(root=DATA_PATH, train=train, download=True, transform=transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2)
-    return trainloader
+    data_set = torchvision.datasets.MNIST(root=DATA_PATH, train=train, download=True, transform=transform)
+    set_loader = torch.utils.data.DataLoader(data_set, batch_size=batch_size, shuffle=True, num_workers=2)
+    return set_loader
