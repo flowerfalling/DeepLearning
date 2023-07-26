@@ -9,17 +9,16 @@ from matplotlib import pyplot as plt
 
 def imgshow():
     x = (torch.load('./show.pt') + 1) / 2
-    classes = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-    label = [6, 1, 0, 9, 7, 1, 8, 9, 3, 5, 6, 7, 1, 8, 9]
+    classes = ['T-shirt', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+    label = [0, 6, 8, 6, 5, 4, 6, 2, 1, 8, 6, 4, 0, 8, 0]
     _, axes = plt.subplots(3, 5, figsize=(5, 5))
     axes = axes.flatten()
-    for i, (ax, img) in enumerate(zip(axes, x.reshape(15, 3, 32, 32))):
-        ax.imshow(img.numpy().transpose([1, 2, 0]))
+    for i, (ax, img) in enumerate(zip(axes, x.reshape(15, 28, 28))):
+        ax.imshow(img.numpy())
         ax.axes.get_xaxis().set_visible(False)
         ax.axes.get_yaxis().set_visible(False)
         ax.set_title(classes[label[i]])
     plt.show()
-    pass
 
 
 def main():

@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 def imgshow():
     x = torch.load('./show.pt')
-    _, axes = plt.subplots(3, 4, figsize=(4.5, 5))
+    _, axes = plt.subplots(3, 5, figsize=(5, 5))
     axes = axes.flatten()
     for ax, img in zip(axes, x.reshape(15, 28, 28)):
         ax.imshow(img.numpy())
