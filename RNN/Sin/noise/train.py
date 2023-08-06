@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2023/8/6 15:17
+# @Time    : 2023/8/6 17:54
 # @Author  : 之落花--falling_flowers
 # @File    : train.py
 # @Software: PyCharm
@@ -15,8 +15,8 @@ sys.path.append('../../..')
 import base
 from net import Net
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Sin\\smooth\\1.pth"
-EPOCH = 2000
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Sin\\noise\\1.pth"
+EPOCH = 1000
 
 num_steps = 49
 
@@ -34,9 +34,9 @@ def train(epo=1, load=True, save=False, save_path=PATH):
     begin_state = torch.zeros(1, 1, 32).detach_()
     for epoch in track(range(epo), description="Training..."):
         start = random.randint(0, 3)
-        data = torch.sin(torch.linspace(start, start + 10, 50))
-        x = data[:-1].reshape(1, 49, 1)
-        t = data[1:].reshape(1, 49, 1)
+        data = torch.sin(torch.linspace(start, start + 20, 100)) + torch.normal(0, 0.2, (100,))
+        x = torch.cat([data[i:-5 + i, None] for i in range(4)], 1)[None]
+        t = data[5:].reshape(1, 95, 1)
         y, _ = net(x, begin_state)
         loss = criterion(y, t)
         optimizer.zero_grad()
