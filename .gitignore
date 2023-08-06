@@ -256,3 +256,4 @@ pth/
 .idea/
 *.png
 image/
+logs/

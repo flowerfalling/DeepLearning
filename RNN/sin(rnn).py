@@ -4,11 +4,14 @@
 # @File    : sin(rnn).py
 # @Software: PyCharm
 import random
+import sys
 
 import numpy as np
 import torch
 from matplotlib import pyplot as plt
 from torch import nn
+
+sys.path.append('..')
 
 import base
 
@@ -45,7 +48,7 @@ def train(save=False):
     optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
     hidden_prev = torch.zeros(1, 1, 16)
 
-    for i in range(6000):
+    for i in range(1000):
         strat = np.random.randint(3, size=1)[0]
         time_steps = np.linspace(strat, strat + 10, 50)
         data = np.sin(time_steps)
@@ -55,7 +58,7 @@ def train(save=False):
         output, hidden_prev = net(x, hidden_prev)
         hidden_prev = hidden_prev.detach()
         loss = criterion(output, y)
-        net.zero_grad()
+        optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
@@ -74,8 +77,8 @@ def test():
     except FileNotFoundError:
         pass
     hidden_prev = torch.zeros(1, 1, 16)
-    strat = random.randint(0, 2)
-    time_steps = np.linspace(strat, strat + 10, 50)
+    start = random.randint(0, 2)
+    time_steps = np.linspace(start, start + 10, 50)
     data = np.sin(time_steps)
     x = torch.tensor(data[:-1]).float().view(1, 49, 1)
 
@@ -99,7 +102,7 @@ def test():
 
 @base.timer
 def main():
-    # train(True)
+    # train()
     test()
     pass
 
