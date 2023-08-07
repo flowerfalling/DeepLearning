@@ -7,6 +7,7 @@ import sys
 
 import torch
 from torch import nn
+from rich.progress import track
 
 sys.path.append('..')
 sys.path.append('../../..')
@@ -15,7 +16,7 @@ from net import Net
 import data
 import base
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\1\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\RNN\\1.pth"
 EPOCH = 100
 
 batch_size, num_steps = 32, 35
@@ -32,7 +33,7 @@ def train(epo=1, load=True, save=False, save_path=PATH):
             print(e)
             exit(-1)
     train_iter, vocab = data.load_data_time_machine(batch_size, num_steps)
-    for epoch in range(epo):
+    for epoch in track(range(epo), description='Training...'):
         epo_loss = 0
         for x, t in train_iter:
             state = Net.begin_state(batch_size)

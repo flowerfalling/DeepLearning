@@ -3,13 +3,9 @@
 # @Author  : 之落花--falling_flowers
 # @File    : net.py
 # @Software: PyCharm
-import sys
-
 import torch
 from torch import nn
 from torch.nn import functional as F
-
-sys.path.append('..')
 
 
 class Net(nn.Module):

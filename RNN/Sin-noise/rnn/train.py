@@ -15,7 +15,7 @@ sys.path.append('../../..')
 import base
 from net import Net
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Sin\\noise\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Sin-noise\\rnn\\1.pth"
 EPOCH = 1000
 
 num_steps = 49

@@ -10,12 +10,10 @@ import torch
 from net import Net
 
 sys.path.append('..')
-sys.path.append('../../..')
 
 import data
-import base
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\1\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\RNN\\1.pth"
 NUM_PREDS = 50
 
 
@@ -40,10 +38,8 @@ def test(prefix):
     print(''.join([vocab.idx_to_token[i] for i in outputs]))
 
 
-@base.ringer
-@base.timer
 def main():
-    test('the traveller')
+    test('time traveller')
 
 
 if __name__ == '__main__':
