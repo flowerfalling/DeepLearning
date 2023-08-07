@@ -6,18 +6,19 @@
 import sys
 
 import torch
-from torch import nn
 from rich.progress import track
+from torch import nn
+
+from net import Net
 
 sys.path.append('..')
 sys.path.append('../../..')
 
-from net import Net
 import data
 import base
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\rnn\\1.pth"
-EPOCH = 100
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\lstm\\1.pth"
+EPOCH = 500
 
 batch_size, num_steps = 32, 35
 
@@ -36,9 +37,10 @@ def train(epo=1, load=True, save=False, save_path=PATH):
     for epoch in track(range(epo), description='Training...'):
         epo_loss = 0
         for x, t in train_iter:
-            state = Net.begin_state(batch_size)
+            state, cell = Net.begin_state(batch_size)
             state.detach_()
-            y, state = net(x, state)
+            cell.detach_()
+            y, (state, cell) = net(x, (state, cell))
             optimizer.zero_grad()
             loss = criterion(y.reshape(-1, y.shape[-1]), t.reshape(-1))
             epo_loss += loss
@@ -52,7 +54,7 @@ def train(epo=1, load=True, save=False, save_path=PATH):
 @base.ringer
 @base.timer
 def main():
-    train(EPOCH, True, True)
+    train(EPOCH, True)
 
 
 if __name__ == '__main__':

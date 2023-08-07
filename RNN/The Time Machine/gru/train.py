@@ -17,7 +17,7 @@ sys.path.append('../../..')
 import data
 import base
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\GRU\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\gru\\1.pth"
 EPOCH = 1
 
 batch_size, num_steps = 32, 35

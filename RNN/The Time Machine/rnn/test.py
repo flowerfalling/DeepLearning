@@ -13,7 +13,7 @@ sys.path.append('..')
 
 import data
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\RNN\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\rnn\\1.pth"
 NUM_PREDS = 50
 
 
