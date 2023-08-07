@@ -40,7 +40,7 @@ def train(epo=1, load=True, save=False, save_path=PATH):
             state, cell = Net.begin_state(batch_size)
             state.detach_()
             cell.detach_()
-            y, (state, cell) = net(x, (state, cell))
+            y, _ = net(x, (state, cell))
             optimizer.zero_grad()
             loss = criterion(y.reshape(-1, y.shape[-1]), t.reshape(-1))
             epo_loss += loss
