@@ -32,7 +32,7 @@ class Seq2SeqEncoder(Encoder):
         self.embedding = nn.Embedding(vocab_size, embed_size)
         self.gru = nn.GRU(embed_size, num_hiddens, num_layers, dropout=dropout, batch_first=True)
 
-    def forward(self, x):
+    def forward(self, x, *args):
         x = self.embedding(x)
         y, state = self.gru(x)
         return y, state
@@ -45,12 +45,25 @@ class Seq2SeqDecoder(Decoder):
         self.gru = nn.GRU(embed_size + num_hiddens, num_hiddens, num_layers, dropout=dropout, batch_first=True)
         self.fc = nn.Linear(num_hiddens, vocab_size)
 
-    def forward(self, x, state):
+    def forward(self, x, state, *args):
         x = self.embedding(x)
         x = torch.cat((x, state[-1].repeat(x.shape[1], 1, 1).transpose(0, 1)), 2)
         y, state = self.gru(x, state)
         y = self.fc(y)
         return y, state
 
-    def init_state(self, en_outputs):
+    def init_state(self, en_outputs, *args):
         return en_outputs[1]
+
+
+class EncoderDecoder(nn.Module):
+    def __init__(self, encoder, decoder, **kwargs):
+        super(EncoderDecoder, self).__init__(**kwargs)
+        self.encoder = encoder
+        self.decoder = decoder
+
+    def forward(self, enc_X, dec_X, *args):
+        enc_outputs = self.encoder(enc_X, *args)
+        dec_state = self.decoder.init_state(enc_outputs, *args)
+        return self.decoder(dec_X, dec_state)
+

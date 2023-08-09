@@ -7,6 +7,10 @@ import collections
 
 import torch
 
+import sys
+sys.path.append('../../..')
+import base
+
 
 class Vocab:
     def __init__(self, tokens=None, min_freq=0, reserved_tokens=None):
@@ -55,7 +59,7 @@ def count_corpus(tokens):
 
 
 def read():
-    with open('../../data/Translation/eng-fra.txt', encoding='utf-8') as f:
+    with open(r'D:\Projects\PycharmProjects\Deep-learning\data\Translation\eng-fra.txt', encoding='utf-8') as f:
         return f.readlines()
 
 
@@ -83,9 +87,10 @@ def batch_reshape(x, batch_size, num_examples):
     if isinstance(x, tuple):
         return tuple(map(lambda a: batch_reshape(a, batch_size, num_examples), x))
     else:
-        return x[:-(x.size()[0] % batch_size)].reshape(-1, batch_size, *x.size()[1:])[:num_examples]
+        return x[:-(x.size(0) % batch_size)].reshape(-1, batch_size, *x.size()[1:])[:num_examples]
 
 
+@base.timer
 def load_data(batch_size, num_steps, num_examples=600):
     source, target = load()
     src_vocab = Vocab(source, 2, ['<pad>', '<bos>', '<eos>'])
