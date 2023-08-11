@@ -21,6 +21,7 @@ import base
 
 EPOCH = 100
 PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Eng2Fra\\en_de_coder_gru\\1.pth"
+
 embed_size, num_hiddens, num_layers, dropout = 32, 32, 2, 0.1
 batch_size, num_steps = 64, 10
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -85,7 +86,7 @@ def train(epo=1, load: Union[bool, str] = PATH, save: Union[bool, str] = False):
 
 
 def main():
-    train(EPOCH, False)
+    train(EPOCH, True)
     plt.plot(loss_list)
     plt.show()
 

@@ -13,33 +13,35 @@ sys.path.append('..')
 
 import data
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\lstm\\1.pth"
 NUM_PREDS = 50
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\lstm\\1.pth"
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
+net = Net().to(device)
+net.eval()
+
+try:
+    net.load_state_dict(torch.load(PATH, map_location=device))
+except FileNotFoundError as e:
+    print(e)
+    exit(-1)
 
 
 def test(prefix):
-    net = Net()
-    net.train(False)
-    try:
-        net.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
-    except FileNotFoundError as e:
-        print(e)
-        exit(-1)
-    state = Net.begin_state()
+    state = [i.to(device) for i in Net.begin_state()]
     vocab = data.Vocab(data.tokenize(data.read_time_machine(), 'char'))
     outputs = [vocab[prefix[0]]]
-    get_input = lambda: torch.tensor(outputs[-1]).reshape(1, 1)
     for y in prefix[1:]:
-        _, state = net(get_input(), state)
+        _, state = net(torch.tensor(outputs[-1], device=device).reshape(1, 1), state)
         outputs.append(vocab[y])
     for _ in range(NUM_PREDS):
-        y, state = net(get_input(), state)
+        y, state = net(torch.tensor(outputs[-1], device=device).reshape(1, 1), state)
         outputs.append(int(y.argmax()))
-    print(''.join([vocab.idx_to_token[i] for i in outputs]))
+    return ''.join([vocab.idx_to_token[i] for i in outputs])
 
 
 def main():
-    test('time traveller')
+    print(test('time traveller'))
 
 
 if __name__ == '__main__':
