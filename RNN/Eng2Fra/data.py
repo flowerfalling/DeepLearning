@@ -6,10 +6,7 @@
 import collections
 
 import torch
-
-import sys
-sys.path.append('../../..')
-import base
+from torch.utils import data
 
 
 class Vocab:
@@ -60,15 +57,27 @@ def count_corpus(tokens):
 
 def read():
     with open(r'D:\Projects\PycharmProjects\Deep-learning\data\Translation\eng-fra.txt', encoding='utf-8') as f:
-        return f.readlines()
+        return f.read()
 
 
-def load():
-    lines = read()
-    eng_fra = [i.split('\t') for i in lines]
-    eng = [i[0].split(' ') for i in eng_fra]
-    fra = [i[1][:-1].split(' ') for i in eng_fra]
-    return eng, fra
+def preprocess_nmt(text):
+    def no_space(char, prev_char):
+        return char in set(',.!?') and prev_char != ' '
+    text = text.replace('\u202f', ' ').replace('\xa0', ' ').lower()
+    out = [' ' + char if i > 0 and no_space(char, text[i - 1]) else char for i, char in enumerate(text)]
+    return ''.join(out)
+
+
+def tokenize_nmt(text, num_examples=None):
+    source, target = [], []
+    for i, line in enumerate(text.split('\n')):
+        if num_examples and i > num_examples:
+            break
+        parts = line.split('\t')
+        if len(parts) == 2:
+            source.append(parts[0].split(' '))
+            target.append(parts[1].split(' '))
+    return source, target
 
 
 def build_array(lines, vocab, num_steps):
@@ -83,18 +92,18 @@ def truncate_pad(line, num_steps, padding_token):
     return line + [padding_token] * (num_steps - len(line))
 
 
-def batch_reshape(x, batch_size, num_examples):
-    if isinstance(x, tuple):
-        return tuple(map(lambda a: batch_reshape(a, batch_size, num_examples), x))
-    else:
-        return x[:-(x.size(0) % batch_size)].reshape(-1, batch_size, *x.size()[1:])[:num_examples]
+def load_array(data_arrays, batch_size, is_train=True):
+    dataset = data.TensorDataset(*data_arrays)
+    return data.DataLoader(dataset, batch_size, shuffle=is_train)
 
 
-@base.timer
 def load_data(batch_size, num_steps, num_examples=600):
-    source, target = load()
+    text = preprocess_nmt(read())
+    source, target = tokenize_nmt(text, num_examples)
     src_vocab = Vocab(source, 2, ['<pad>', '<bos>', '<eos>'])
-    tar_vocab = Vocab(target, 2, ['<pad>', '<bos>', '<eos>'])
-    src_array, src_valid_len = batch_reshape(build_array(source, src_vocab, num_steps), batch_size, num_examples)
-    tar_array, tar_valid_len = batch_reshape(build_array(target, tar_vocab, num_steps), batch_size, num_examples)
-    return zip(zip(src_array, src_valid_len), zip(tar_array, tar_valid_len)), src_vocab, tar_vocab
+    tgt_vocab = Vocab(target, 2, ['<pad>', '<bos>', '<eos>'])
+    src_array, src_valid_len = build_array(source, src_vocab, num_steps)
+    tgt_array, tgt_valid_len = build_array(target, tgt_vocab, num_steps)
+    data_arrays = (src_array, src_valid_len, tgt_array, tgt_valid_len)
+    data_iter = load_array(data_arrays, batch_size)
+    return data_iter, src_vocab, tgt_vocab

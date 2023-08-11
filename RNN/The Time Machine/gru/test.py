@@ -19,7 +19,7 @@ NUM_PREDS = 50
 
 def test(prefix):
     net = Net()
-    net.train(False)
+    net.eval()
     try:
         net.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
     except FileNotFoundError as e:
