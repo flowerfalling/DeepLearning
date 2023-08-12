@@ -22,7 +22,7 @@ net = Net().to(device)
 net.eval()
 
 try:
-    net.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load(PATH, map_location=device))
 except FileNotFoundError as e:
     print(e)
     exit(-1)

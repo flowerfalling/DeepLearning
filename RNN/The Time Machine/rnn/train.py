@@ -26,6 +26,7 @@ batch_size, num_steps = 32, 35
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 loss_list = []
 
+train_iter, vocab = data.load_data_time_machine(batch_size, num_steps)
 net = Net().to(device)
 optimizer = torch.optim.SGD(net.parameters(), lr=0.05, momentum=0.9)
 criterion = nn.CrossEntropyLoss().to(device)
@@ -42,7 +43,6 @@ def train(epo=1, load: Union[bool, str] = PATH, save: Union[bool, str] = False):
         except FileNotFoundError as e:
             print(e)
             exit(-1)
-    train_iter, vocab = data.load_data_time_machine(batch_size, num_steps)
     for epoch in track(range(epo), description='Training...'):
         epo_loss = 0
         for batch in train_iter:

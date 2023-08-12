@@ -6,6 +6,7 @@
 import sys
 
 import torch
+from rich.progress import track
 
 from net import Net
 
@@ -16,27 +17,31 @@ from data import loader
 import base
 
 PATH = "D:/Projects/PycharmProjects/Deep-learning/pth\\CNN\\cifar-10\\1\\1.pth"
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+
+testloader = loader(False)
+net = Net().to(device)
+net.eval()
+
+try:
+    net.load_state_dict(torch.load(PATH, map_location=device))
+except FileNotFoundError as e:
+    print(e)
+    exit(-1)
 
 
+@base.ringer
+@base.timer
 def test():
-    net = Net()
-    net.train(False)
-    try:
-        net.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
-    except FileNotFoundError as e:
-        print(e)
-        exit(-1)
-    testloader = loader(False)
     i = 0
-    for data, target in testloader:
+    for batch in track(testloader, description='Testing...'):
+        data, target = [i.to(device) for i in batch]
         outcome = net(data)
         if torch.argmax(outcome) == target[0]:
             i += 1
     print(f'Correct rate: {i}/{len(testloader)}')
 
 
-@base.ringer
-@base.timer
 def main():
     test()
 
