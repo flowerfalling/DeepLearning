@@ -3,6 +3,8 @@
 # @Author  : 之落花--falling_flowers
 # @File    : base.py
 # @Software: PyCharm
+from typing import Callable
+
 import torch
 from torchviz import make_dot
 
@@ -20,15 +22,17 @@ def timer(func):
     return timerfunc
 
 
-def ringer(func, beep=(500, 500)):
-    import winsound
+def ringer(frequency=500, duration=500):
+    def wrapper(func: Callable):
+        def ringfunc(*args, **kwargs):
+            import winsound
+            result = func(*args, **kwargs)
+            winsound.Beep(frequency, duration)
+            return result
 
-    def ringfunc(*args, **kwargs):
-        result = func(*args, **kwargs)
-        winsound.Beep(*beep)
-        return result
+        return ringfunc
 
-    return ringfunc
+    return wrapper
 
 
 def imgshow(img):
@@ -57,18 +61,15 @@ def test(net, path, dataloader):
     print(f'Correct rate: {i}/{len(dataloader)}')
 
 
-def summary(input_size, model, _print=True, border=False):
-    import pytorchsummary
-    pytorchsummary.summary(input_size, model, _print, border)
+# def summary(input_size, model, _print=True, border=False):
+#     import torchsummary
+#     torchsummary.summary(input_size, model, _print, border)
 
 
 def imshow(net: torch.nn.Module, input_, format_: str, name: str, directory: str = './image'):
-    img = make_dot(net(input_),
-                   params=dict(net.named_parameters()),
-                   show_attrs=True, show_saved=True)
+    img = make_dot(net(input_), params=dict(net.named_parameters()), show_attrs=True, show_saved=True)
     img.format = format_
     img.view(cleanup=True, filename=name, directory=directory)
-    pass
 
 
 @timer
