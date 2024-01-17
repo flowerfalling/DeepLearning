@@ -3,20 +3,15 @@
 # @Author  : 之落花--falling_flowers
 # @File    : test.py
 # @Software: PyCharm
-import sys
 
 import torch
 from rich.progress import track
 
+import base
+from CNN.cifar10.data import loader
 from net import Net
 
-sys.path.append('..')
-sys.path.append('../../..')
-
-from data import loader
-import base
-
-PATH = "D:/Projects/PycharmProjects/Deep-learning/pth\\CNN\\cifar-10\\1\\1.pth"
+PATH = "D:/Projects/PycharmProjects/Deep-learning/pth\\CNN\\cifar10\\1\\1.pth"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 testloader = loader(False)
@@ -30,7 +25,7 @@ except FileNotFoundError as e:
     exit(-1)
 
 
-@base.ringer
+@base.ringer()
 @base.timer
 def test():
     i = 0
