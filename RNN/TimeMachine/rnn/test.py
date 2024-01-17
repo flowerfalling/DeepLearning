@@ -3,20 +3,17 @@
 # @Author  : 之落花--falling_flowers
 # @File    : test.py
 # @Software: PyCharm
-import sys
 
 import torch
 
+from RNN.TimeMachine import data
 from net import Net
 
-sys.path.append('..')
-
-import data
-
 NUM_PREDS = 50
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\deep-lstm\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\TimeMachine\\rnn\\1.pth"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
+vocab = data.Vocab(data.tokenize(data.read_time_machine(), 'char'))
 net = Net().to(device)
 net.eval()
 
@@ -28,8 +25,7 @@ except FileNotFoundError as e:
 
 
 def test(prefix):
-    state = [i.to(device) for i in Net.begin_state()]
-    vocab = data.Vocab(data.tokenize(data.read_time_machine(), 'char'))
+    state = Net.begin_state().to(device)
     outputs = [vocab[prefix[0]]]
     for y in prefix[1:]:
         _, state = net(torch.tensor(outputs[-1], device=device).reshape(1, 1), state)

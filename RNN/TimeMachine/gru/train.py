@@ -3,7 +3,6 @@
 # @Author  : 之落花--falling_flowers
 # @File    : train.py
 # @Software: PyCharm
-import sys
 from typing import Union
 
 import torch
@@ -11,16 +10,12 @@ from matplotlib import pyplot as plt
 from rich.progress import track
 from torch import nn
 
+import base
+from RNN.TimeMachine import data
 from net import Net
 
-sys.path.append('..')
-sys.path.append('../../..')
-
-import data
-import base
-
 EPOCH = 100
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\The Time Machine\\rnn\\1.pth"
+PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\TimeMachine\\gru\\1.pth"
 
 batch_size, num_steps = 32, 35
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -33,7 +28,7 @@ criterion = nn.CrossEntropyLoss().to(device)
 net.train()
 
 
-@base.ringer
+@base.ringer()
 @base.timer
 def train(epo=1, load: Union[bool, str] = PATH, save: Union[bool, str] = False):
     global loss_list
