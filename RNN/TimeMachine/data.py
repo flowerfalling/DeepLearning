@@ -11,7 +11,7 @@ import torch
 
 
 def read_time_machine():
-    with open(r'D:\Projects\PycharmProjects\Deep-learning\data\Book\The Time Machine', encoding='utf-8') as f:
+    with open(r'D:\Projects\PycharmProjects\DeepLearning\data\Book\The Time Machine', encoding='utf-8') as f:
         lines = f.readlines()
     return [re.sub('[^A-Za-z]+', ' ', line).strip().lower() for line in lines]
 
