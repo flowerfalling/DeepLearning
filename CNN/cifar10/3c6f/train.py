@@ -15,7 +15,7 @@ from CNN.fashion_minst.data import loader
 from net import Net
 
 EPOCH = 100
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\CNN\\cifar10\\1\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\CNN\cifar10\1\1.pth"
 
 batch_size = 32
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')

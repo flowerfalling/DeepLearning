@@ -1,3 +1,3 @@
-# Deep-learning
+# DeepLearning
 
 About pytorch neural network

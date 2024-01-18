@@ -7,7 +7,7 @@ import torch.utils.data
 import torchvision
 from torchvision import transforms
 
-DATA_PATH = r"D:\Projects\PycharmProjects\Deep-learning\data"
+DATA_PATH = r"D:\Projects\PycharmProjects\DeepLearning\data"
 
 
 def loader(train, batch_size=1):
