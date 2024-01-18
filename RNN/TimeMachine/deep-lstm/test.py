@@ -3,14 +3,13 @@
 # @Author  : 之落花--falling_flowers
 # @File    : test.py
 # @Software: PyCharm
-
 import torch
 
 from RNN.TimeMachine import data
 from net import Net
 
 NUM_PREDS = 50
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\TimeMachine\\deep-lstm\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\RNN\TimeMachine\deep-lstm\1.pth"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 net = Net().to(device)
