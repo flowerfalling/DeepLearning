@@ -124,13 +124,13 @@ def net_image(net, input_size, name='net'):
         for j in i.size():
             c *= j
         print("该层参数和：" + str(c))
-        k = k + c
+        k += c
     print("总参数数量和：" + str(k))
 
 
 def summary(input_size, model, _print=True, border=False):
-    import pytorchsummary
-    pytorchsummary.summary(input_size, model, _print, border)
+    import torchsummary
+    torchsummary.summary(input_size, model, _print, border)
 
 
 @timer
