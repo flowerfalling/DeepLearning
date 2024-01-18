@@ -15,7 +15,7 @@ from RNN.TimeMachine import data
 from net import Net
 
 EPOCH = 100
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\TimeMachine\\gru\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\RNN\TimeMachine\gru\1.pth"
 
 batch_size, num_steps = 32, 35
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
