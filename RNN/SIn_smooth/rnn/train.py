@@ -4,7 +4,6 @@
 # @File    : train.py
 # @Software: PyCharm
 import random
-import sys
 from typing import Union
 
 import torch
@@ -12,14 +11,11 @@ from matplotlib import pyplot as plt
 from rich.progress import track
 from torch import nn
 
+import base
 from net import Net
 
-sys.path.append('../../..')
-
-import base
-
 EPOCH = 2000
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Sin-smooth\\rnn\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\RNN\Sin-smooth\rnn\1.pth"
 
 num_steps = 49
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -31,7 +27,7 @@ criterion = nn.MSELoss().to(device)
 net.train()
 
 
-@base.ringer
+@base.ringer()
 @base.timer
 def train(epo=1, load: Union[bool, str] = PATH, save: Union[bool, str] = False):
     global loss_list
