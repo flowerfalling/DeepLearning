@@ -10,7 +10,7 @@ import torch
 
 from net import Net
 
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Sin-noise\\rnn\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\RNN\Sin-noise\rnn\1.pth"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 net = Net().to(device)
