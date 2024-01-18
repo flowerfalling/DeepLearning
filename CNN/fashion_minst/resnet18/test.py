@@ -3,20 +3,15 @@
 # @Author  : 之落花--falling_flowers
 # @File    : test.py
 # @Software: PyCharm
-import sys
 
 import torch
 from rich.progress import track
 
+import base
+from CNN.fashion_minst.data import loader
 from net import Net
 
-sys.path.append('..')
-sys.path.append('../../..')
-
-from data import loader
-import base
-
-PATH = "D:/Projects/PycharmProjects/Deep-learning/pth\\CNN\\fashion_mnist\\2\\4.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\CNN\fashion_mnist\2\4.pth"
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 testloader = loader(False, resize=True)
@@ -30,7 +25,7 @@ except FileNotFoundError as e:
     exit(-1)
 
 
-@base.ringer
+@base.ringer()
 @base.timer
 def test():
     i = 0

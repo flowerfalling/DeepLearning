@@ -3,24 +3,19 @@
 # @Author  : 之落花--falling_flowers
 # @File    : train.py
 # @Software: PyCharm
-import sys
 from typing import Union
 
 import matplotlib.pyplot as plt
 import torch
-from torch import nn
 from rich.progress import track
+from torch import nn
 
+import base
+from CNN.fashion_minst.data import loader
 from net import Net
 
-sys.path.append('..')
-sys.path.append('../../..')
-
-from data import loader
-import base
-
 EPOCH = 1
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\CNN\\fashion_mnist\\2\\2.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\CNN\fashion_mnist\2\2.pth"
 
 batch_size = 32
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
@@ -34,7 +29,7 @@ dataset_length = len(trainloader)
 net.train()
 
 
-@base.ringer
+@base.ringer()
 @base.timer
 def train(epo=1, load: Union[bool, str] = PATH, save: Union[bool, str] = False):
     global loss_list
