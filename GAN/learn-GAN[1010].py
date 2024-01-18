@@ -4,13 +4,13 @@
 # @File    : learn-GAN.py
 # @Software: PyCharm
 import random
+from abc import ABCMeta
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 import torch
 from torch import nn
-from abc import ABCMeta
 
 PATH_G = '../pth/GAN_1010G.pth'
 PATH_D = '../pth/GAN_1010D.pth'
