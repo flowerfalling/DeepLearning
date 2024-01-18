@@ -3,7 +3,6 @@
 # @Author  : 之落花--falling_flowers
 # @File    : train.py
 # @Software: PyCharm
-import sys
 from typing import Union
 
 import matplotlib.pyplot as plt
@@ -11,16 +10,12 @@ import torch
 from rich.progress import track
 from torch import nn
 
-import net as n
-
-sys.path.append('..')
-sys.path.append('../../..')
-
-import data
 import base
+import net as n
+from RNN.Eng2Fra import data
 
 EPOCH = 100
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Eng2Fra\\en_de_coder_gru\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\RNN\Eng2Fra\en_de_coder_gru\1.pth"
 
 embed_size, num_hiddens, num_layers, dropout = 32, 32, 2, 0.1
 batch_size, num_steps = 64, 10
@@ -57,7 +52,7 @@ criterion = MaskedCrossEntropyLoss().to(device)
 net.train()
 
 
-@base.ringer
+@base.ringer()
 @base.timer
 def train(epo=1, load: Union[bool, str] = PATH, save: Union[bool, str] = False):
     global loss_list

@@ -3,17 +3,12 @@
 # @Author  : 之落花--falling_flowers
 # @File    : test.py
 # @Software: PyCharm
-import sys
-
 import torch
 
 import net as n
+from RNN.Eng2Fra import data
 
-sys.path.append('..')
-
-import data
-
-PATH = "D:\\Projects\\PycharmProjects\\Deep-learning\\pth\\RNN\\Eng2Fra\\en_de_coder_gru\\1.pth"
+PATH = r"D:\Projects\PycharmProjects\DeepLearning\pth\RNN\Eng2Fra\en_de_coder_gru\1.pth"
 
 embed_size, num_hiddens, num_layers, dropout = 32, 32, 2, 0.1
 batch_size, num_steps = 64, 10
